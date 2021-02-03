@@ -54,16 +54,12 @@ const App=() => {
     auth.createUserWithEmailAndPassword(email,password)
     .then((authUser)=>{
       return authUser.user.updateProfile({
-        displayName:username
-      })
-      // if(authUser){
-      //   setOpen(false)
-      // }
-      
+          displayName:username
+        })
     })
     .catch((error)=>alert(error.message))
-    setOpen(false)
-    setUsername('')
+      // setOpen(false)
+      setUsername('')
       setEmail('')
       setPassword('')
   }
@@ -73,15 +69,10 @@ const App=() => {
     .then((authUser)=>{
         if(authUser){
           setInOpen(false)
-          // setEmail('')
-          // setPassword('')
+          setEmail('')
+          setPassword('')
         }
     })
-    // .then((authUser)=>{
-    //   return authUser.user.updateProfile({
-    //     displayName:username
-    //   })
-    // })
     .catch((error)=>alert(error.message))
     
   }
@@ -214,9 +205,9 @@ const App=() => {
               ):''}
             </div>
             {
-              user?
+              user || username?
               (<div className={"logout__toggle "+ (logToggle?'':'visible')}>
-                <Button onClick={() => auth.signOut()}>Logout</Button>
+                <Button onClick={() => {auth.signOut(); setlogToggle(false)}}>Logout</Button>
               </div>)
               :
               (<div className="signIn__signUp">
