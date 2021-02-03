@@ -3,7 +3,9 @@ import './App.css';
 import { db,auth } from './firebase';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button,Input } from '@material-ui/core';
+import {ArrowDropDown,ArrowDropUp} from '@material-ui/icons';
 import Modal from '@material-ui/core/Modal';
+// import InstagramEmbed from 'react-instagram-embed';
 import ImgUpload from './ImgUpload'
 // import Avatar from '@material-ui/core/Avatar';
 
@@ -45,6 +47,7 @@ const App=() => {
   const [password,setPassword] = useState('')
   const [user,setUser] = useState(null)
   const [logToggle,setlogToggle] = useState(false)
+  const [PostModal,setPostModal] = useState(false)
 
   const handleSignUp = (e)=> {
     e.preventDefault()
@@ -111,18 +114,6 @@ const App=() => {
 
   return (
     <div className="app">
-
-      {
-        user?.displayName?(
-          <ImgUpload username={user.displayName}/>
-        ):(
-          <h3>Sorry you need to login to upload/post</h3>
-        )
-        
-      }
-
-      
-
       <Modal
           open={open}
           onClose={() =>setOpen(false)}
@@ -179,6 +170,23 @@ const App=() => {
           </form>
         </div>
       </Modal>
+      <Modal
+          open={PostModal}
+          onClose={() =>setPostModal(false)}
+        >
+         <div style={modalStyle} className={classes.paper}>
+          <center>
+             {
+              user?.displayName?(
+                <ImgUpload username={user.displayName} setPostModal={setPostModal}/>
+              ):(
+                <h3><code>!!!</code>you need to login to upload/post</h3>
+              )
+              
+            }
+          </center>
+        </div>
+      </Modal>
 
       <div className="app__header">
         <div className="navbar__left">
@@ -188,37 +196,47 @@ const App=() => {
               alt="header-pic"
           />
         </div>
+        <div className="nav__center">
+          <Button onClick={() => setPostModal(true)}>Add Post</Button>
+        </div>
         <div className="navbar__right">
-        <div className="user__displayName">
-            {
-            user?.displayName?(
-              <div className="user__profile-avtaer" onClick={()=>setlogToggle(!logToggle)}>
-                <img src="/avater.png" alt="" className="app__avater"/>
-                <div className="div">
-                  <h2>{user.displayName}</h2>
-                 
+          <div className="user__displayName">
+              {
+              user?.displayName?(
+                <div className="user__profile-avtaer" onClick={()=>setlogToggle(!logToggle)}>
+                  <img src="/avater.png" alt="" className="app__avater"/>
+                  <div className="div">
+                    <h2>{user.displayName}</h2>
+                    {logToggle?(<ArrowDropUp />):(<ArrowDropDown />)}
+                    
+                  </div>
                 </div>
-              </div>
-            ):''}
-          </div>
+              ):''}
+            </div>
+            {
+              user?
+              (<div className={"logout__toggle "+ (logToggle?'':'visible')}>
+                <Button onClick={() => auth.signOut()}>Logout</Button>
+              </div>)
+              :
+              (<div className="signIn__signUp">
+                <Button onClick={() => setInOpen(true)}>sign in</Button>
+                <Button onClick={() => setOpen(true)}>sign up</Button>
+              </div>)
+              }
+      </div>
+      </div>
+      
+      <div className="app__post">
+        <center>
           {
-            user?
-            (<div className={"logout__toggle "+ (logToggle?'':'visible')}>
-              <Button onClick={() => auth.signOut()}>Logout</Button>
-            </div>)
-            :
-            (<div className="signIn__signUp">
-              <Button onClick={() => setInOpen(true)}>sign in</Button>
-              <Button onClick={() => setOpen(true)}>sign up</Button>
-            </div>)
-            }
+            posts.map(({ id,post }) =>(
+              <Post key={id} user={user} postId={id}username={post.username} caption={post.caption} src={post.src} />
+            ))
+          }
+        </center>
       </div>
-      </div>
-    {
-      posts.map(({ id,post }) =>(
-        <Post key={id} username={post.username} caption={post.caption} src={post.src} />
-      ))
-    }
+
 
     </div>
   );

@@ -5,16 +5,18 @@
 .app{
   background-color: #FAFAFA;
   height: 100vh;
-  padding: 20px;
 }
 .app__header{
   background-color: white;
   object-fit: contain;
-  padding: 20px;
   border-bottom: 1px solid lightgray;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 50px;
+}
+.navbar__left img{
+  width: 200px;
 }
 img.app__avater,
 img.avater{
@@ -26,6 +28,11 @@ img.avater{
   justify-content: center;
   align-items: center;
   cursor: pointer;
+}
+.div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .logout__toggle.visible{
   visibility: hidden;

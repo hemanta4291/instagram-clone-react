@@ -1,8 +1,10 @@
 import React,{useState} from 'react'
 import { db, storage } from './firebase'
+import { Button,Input } from '@material-ui/core';
 import firebase from 'firebase';
+import './imgUpload.css'
 
-const ImgUpload=({username})=> {
+const ImgUpload=({username,setPostModal})=> {
     const [image,setImage] = useState(null)
     const [progress,setProgress] = useState(0)
     const [caption,setCaption] = useState('')
@@ -40,18 +42,28 @@ const ImgUpload=({username})=> {
                     setProgress(0)
                     setCaption('')
                     setImage(null)
+                    setPostModal(false)
                 })
             }
         )
     }
     return (
-        <div>
+        <div className="add__post__wrapper">
             <h2>Write Post</h2>
-            <progress value={progress} max="100" />
-            <form>
-            <input type="text" onChange={(e)=>setCaption(e.target.value)} value={caption} />
-            <input type="file" onChange={handleImage}/>
-            <button type="submit" onClick={handleUpload}>Upload</button>
+            <progress className="prograss__wrapper" value={progress} max="100" />
+            <form className="post__form">
+                <Input
+                    placeholder="Caption"
+                    type="text"
+                    value={caption}
+                    onChange={(e)=>setCaption(e.target.value)} 
+                />
+               <Input
+                placeholder="upload images"
+                type="file"
+                onChange={handleImage} 
+              />
+                <Button onClick={handleUpload}>Post Publish!</Button>
             </form>
         </div>
     )

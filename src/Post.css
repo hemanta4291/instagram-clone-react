@@ -3,23 +3,67 @@
     max-width: 500px;
     border: 1px solid lightgray;
     margin-bottom: 45px;
+    text-align: left;
 }
 .post__image{
     width: 100%;
     object-fit: contain;
 }
-
+.comment__box{
+    padding: 10px 0 0 20px;
+    color: rgb(87, 84, 84);
+}
+.comments__wrapper {
+    padding: 12px 0 8px 20px;
+}
+.comments__show{
+    padding-bottom: 8px;
+}
+.comments__show .bold__name{
+    font-weight: 700;
+}
 .post__header{
     display: flex;
     align-items: center;
-    padding: 20px;
+    padding: 4px 7px;
 }
 
 .post__avater{
     margin-right: 10px;
 }
-
-.post__text{
+.post__text {
     font-weight: normal;
-    padding: 20px;
+    padding: 0px 0px 10px 20px;
+}
+.post__form__comment input:focus,
+.post__comment_btn:focus{
+    outline: 0;
+}
+form.post__form__comment{
+    display: flex;
+    border-top: 1px solid #ddd;
+    padding: 0 0 0 10px;
+}
+.post__form__comment input{
+    flex:1;
+    width: 100%;
+    display: block;
+    height: 35px;
+    border: 0;
+}
+.post__form__comment .post__comment_btn{
+    flex:0;
+    border: 0;
+}
+.post__form__comment .post__comment_btn.pointer{
+    cursor: pointer;
+}
+
+p.comment__show {
+    padding: 10px 15px;
+}
+
+p.comment__show .bold__name {
+    color: #545050;
+    font-weight: 700;
 }
