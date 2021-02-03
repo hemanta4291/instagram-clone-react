@@ -1,24 +1,225 @@
-import React from 'react';
-import logo from './logo.svg';
+import React,{ useState, useEffect } from 'react';
 import './App.css';
+import { db,auth } from './firebase';
+import { makeStyles } from '@material-ui/core/styles';
+import { Button,Input } from '@material-ui/core';
+import Modal from '@material-ui/core/Modal';
+import ImgUpload from './ImgUpload'
+// import Avatar from '@material-ui/core/Avatar';
 
-function App() {
+
+import Post from './Post'
+
+
+
+function getModalStyle() {
+  const top = 50;
+  const left = 50;
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
+}
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    position: 'absolute',
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+}));
+
+const App=() => {
+  const classes = useStyles();
+  const [modalStyle] = useState(getModalStyle);
+  const [open, setOpen] = useState(false);
+  const [Inopen, setInOpen] = useState(false);
+  const [posts,setPosts] = useState([])
+  const [username,setUsername] = useState('')
+  const [email,setEmail] = useState('')
+  const [password,setPassword] = useState('')
+  const [user,setUser] = useState(null)
+  const [logToggle,setlogToggle] = useState(false)
+
+  const handleSignUp = (e)=> {
+    e.preventDefault()
+    auth.createUserWithEmailAndPassword(email,password)
+    .then((authUser)=>{
+      return authUser.user.updateProfile({
+        displayName:username
+      })
+      // if(authUser){
+      //   setOpen(false)
+      // }
+      
+    })
+    .catch((error)=>alert(error.message))
+    setOpen(false)
+    setUsername('')
+      setEmail('')
+      setPassword('')
+  }
+  const handleSignIn = (e)=> {
+    e.preventDefault()
+    auth.signInWithEmailAndPassword (email,password)
+    .then((authUser)=>{
+        if(authUser){
+          setInOpen(false)
+          // setEmail('')
+          // setPassword('')
+        }
+    })
+    // .then((authUser)=>{
+    //   return authUser.user.updateProfile({
+    //     displayName:username
+    //   })
+    // })
+    .catch((error)=>alert(error.message))
+    
+  }
+  useEffect( () =>{
+      const unscriber = auth.onAuthStateChanged((authUser)=>{
+        if(authUser){
+          setUser(authUser)
+          console.log(authUser)
+        }else{
+          setUser(null)
+        }
+      })
+      return ()=>{
+        unscriber();
+      }
+  },[user,username])
+
+  useEffect( () =>{
+    db.collection('posts').orderBy('timestamp','desc').onSnapshot(snaphot =>{
+      setPosts(snaphot.docs.map(doc => 
+        ({
+          id:doc.id,
+          post:doc.data()
+        })
+        ))
+    })
+  },[])
+
+  
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div className="app">
+
+      {
+        user?.displayName?(
+          <ImgUpload username={user.displayName}/>
+        ):(
+          <h3>Sorry you need to login to upload/post</h3>
+        )
+        
+      }
+
+      
+
+      <Modal
+          open={open}
+          onClose={() =>setOpen(false)}
         >
-          Learn React
-        </a>
-      </header>
+         <div style={modalStyle} className={classes.paper}>
+         <form>
+          <center>
+            <h2 id="simple-modal-title">Sign Up</h2>
+              <Input
+                placeholder="Username"
+                type="text"
+                value={username}
+                onChange={(e)=>setUsername(e.target.value)} 
+              />
+              <Input
+                placeholder="Email"
+                type="email"
+                value={email}
+                onChange={(e)=>setEmail(e.target.value)} 
+              />
+               <Input
+                placeholder="Password"
+                type="password"
+                value={password}
+                onChange={(e)=>setPassword(e.target.value)} 
+              />
+              <Button onClick={handleSignUp}>Sign Up</Button>
+          </center>
+          </form>
+        </div>
+      </Modal>
+      <Modal
+          open={Inopen}
+          onClose={() =>setInOpen(false)}
+        >
+         <div style={modalStyle} className={classes.paper}>
+         <form>
+          <center>
+            <h2 id="simple-modal-title">Sing In</h2>
+              <Input
+                placeholder="Email"
+                type="email"
+                value={email}
+                onChange={(e)=>setEmail(e.target.value)} 
+              />
+               <Input
+                placeholder="Password"
+                type="password"
+                value={password}
+                onChange={(e)=>setPassword(e.target.value)} 
+              />
+              <Button onClick={handleSignIn}>Login</Button>
+          </center>
+          </form>
+        </div>
+      </Modal>
+
+      <div className="app__header">
+        <div className="navbar__left">
+          <img 
+              className="app__headerImage"
+              src="ins.png"
+              alt="header-pic"
+          />
+        </div>
+        <div className="navbar__right">
+        <div className="user__displayName">
+            {
+            user?.displayName?(
+              <div className="user__profile-avtaer" onClick={()=>setlogToggle(!logToggle)}>
+                <img src="/avater.png" alt="" className="app__avater"/>
+                <div className="div">
+                  <h2>{user.displayName}</h2>
+                 
+                </div>
+              </div>
+            ):''}
+          </div>
+          {
+            user?
+            (<div className={"logout__toggle "+ (logToggle?'':'visible')}>
+              <Button onClick={() => auth.signOut()}>Logout</Button>
+            </div>)
+            :
+            (<div className="signIn__signUp">
+              <Button onClick={() => setInOpen(true)}>sign in</Button>
+              <Button onClick={() => setOpen(true)}>sign up</Button>
+            </div>)
+            }
+      </div>
+      </div>
+    {
+      posts.map(({ id,post }) =>(
+        <Post key={id} username={post.username} caption={post.caption} src={post.src} />
+      ))
+    }
+
     </div>
   );
 }
