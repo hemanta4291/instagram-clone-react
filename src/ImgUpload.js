@@ -4,7 +4,7 @@ import { Button,Input } from '@material-ui/core';
 import firebase from 'firebase';
 import './imgUpload.css'
 
-const ImgUpload=({user,username,setPostModal})=> {
+const ImgUpload=({noti,setNoti,user,username,setPostModal})=> {
     const [image,setImage] = useState(null)
     const [progress,setProgress] = useState(0)
     const [caption,setCaption] = useState('')
@@ -45,6 +45,9 @@ const ImgUpload=({user,username,setPostModal})=> {
                     setImage(null)
                     setPostModal(false)
                     window.scrollTo(0, 0);
+                    if(url){
+                        setNoti(noti+1)
+                    }
                 })
             }
         )

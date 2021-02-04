@@ -50,6 +50,7 @@ const App=() => {
   const [logToggle,setlogToggle] = useState(false)
   const [PostModal,setPostModal] = useState(false)
   const [ProfModal,setProfModal] = useState(false)
+  const [noti,setNoti] = useState(0)
 
   const handleSignUp = (e)=> {
     e.preventDefault()
@@ -173,7 +174,7 @@ const App=() => {
           <center>
              {
               user?.displayName?(
-                <ImgUpload user = {user} username={user.displayName} setPostModal={setPostModal}/>
+                <ImgUpload noti={noti} setNoti={setNoti} user = {user} username={user.displayName} setPostModal={setPostModal}/>
               ):(
                 <h3><code>!!!</code>you need to login to upload/post</h3>
               )
@@ -207,6 +208,9 @@ const App=() => {
               src="ins.png"
               alt="header-pic"
           />
+          <div className="notification">
+            <p>{noti}</p>
+          </div>
         </div>
         <div className="nav__center">
           <Button onClick={() => setPostModal(true)}>Add Post</Button>
