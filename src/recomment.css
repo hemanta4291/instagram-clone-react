@@ -1,0 +1,36 @@
+.replay__comment {
+    padding-left: 20px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+.comments__wrapper img {
+    width: 25px;
+}
+.first__comments {
+    margin-bottom: 6px;
+}
+.first__comments_li {
+    display: flex;
+    align-items: center;
+}
+
+.first__comments img {
+    flex: 0;
+    margin-right: 7px;
+}
+
+.first__comments p {
+}
+
+.replay__comment img {
+    margin-right: 7px;
+}
+.replay__toggle.nodisplay{
+    display: none;
+}
+.replay_comment_btn {
+    margin: 18px 0 10px 11px;
+    color: #869c98;
+    cursor: pointer;
+}

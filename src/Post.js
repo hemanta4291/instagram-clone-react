@@ -4,6 +4,8 @@ import './Post.css'
 import { db } from './firebase'
 import firebase from 'firebase';
 // import Avatar from '@material-ui/core/Avatar';
+import Commentr from './comment'
+import Recoments from './recomment'
 
 function Post({user,username,postId,caption,src}) {
     
@@ -33,17 +35,23 @@ function Post({user,username,postId,caption,src}) {
             .collection("comments")
             .orderBy('timestamp','desc')
             .onSnapshot((snaphot)=>{
-                setComments(snaphot.docs.map((doc)=>doc.data()))
+                setComments(snaphot.docs.map((doc)=>
+                ({
+                    id:doc.id,
+                    coment:doc.data()
+                  })
+                ))
             })
         }
         return()=>{
             uscribler()
         }
     }, [postId])
+
     return (
         <div className="post">
            <div className="post__header">
-               <img src="/avater.png" alt="" className="avater"/>
+               <img src="avater.png" alt="" className="avater"/>
                 <h3>{username}</h3>
            </div>
            <h4 className="post__text">
@@ -61,23 +69,13 @@ function Post({user,username,postId,caption,src}) {
            
             <div className="comments__wrapper">
                 {
-                    comments.map(({ text,username }) =>(
-                    <p className="comments__show"><span className="bold__name">{username}: </span> {text}</p>
+                    comments.map(({id,coment}) =>(
+                        <Recoments key={id} user={user} postId = {postId} recommentId = {id} username={coment.username} text={coment.text}/>
                     ))
                 }
             </div>
 
-            <div className="add__connents__wrapper">
-                <form className="post__form__comment">
-                    <input
-                        placeholder="add comment"
-                        type="text"
-                        value={comment}
-                        onChange={(e)=>setComment(e.target.value)} 
-                    />
-                    <button className={"post__comment_btn " +(comment?"pointer":'')} disabled={!comment} onClick={handleComment}>Post</button>
-                </form>
-            </div>
+            <Commentr comment={comment} setComment={setComment} handleComment={handleComment}/>
         </div>
     )
 }

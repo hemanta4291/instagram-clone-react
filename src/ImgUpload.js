@@ -43,6 +43,7 @@ const ImgUpload=({username,setPostModal})=> {
                     setCaption('')
                     setImage(null)
                     setPostModal(false)
+                    window.scrollTo(0, 0);
                 })
             }
         )

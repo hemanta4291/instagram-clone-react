@@ -53,15 +53,18 @@ const App=() => {
     e.preventDefault()
     auth.createUserWithEmailAndPassword(email,password)
     .then((authUser)=>{
+      if(authUser){
+        setUsername('')
+        setEmail('')
+        setPassword('')
+      }
       return authUser.user.updateProfile({
           displayName:username
         })
     })
     .catch((error)=>alert(error.message))
       // setOpen(false)
-      setUsername('')
-      setEmail('')
-      setPassword('')
+      
   }
   const handleSignIn = (e)=> {
     e.preventDefault()
@@ -80,7 +83,6 @@ const App=() => {
       const unscriber = auth.onAuthStateChanged((authUser)=>{
         if(authUser){
           setUser(authUser)
-          console.log(authUser)
         }else{
           setUser(null)
         }
@@ -195,7 +197,7 @@ const App=() => {
               {
               user?.displayName?(
                 <div className="user__profile-avtaer" onClick={()=>setlogToggle(!logToggle)}>
-                  <img src="/avater.png" alt="" className="app__avater"/>
+                  <img src="avater.png" alt="" className="app__avater"/>
                   <div className="div">
                     <h2>{user.displayName}</h2>
                     {logToggle?(<ArrowDropUp />):(<ArrowDropDown />)}
@@ -222,7 +224,7 @@ const App=() => {
         <center>
           {
             posts.map(({ id,post }) =>(
-              <Post key={id} user={user} postId={id}username={post.username} caption={post.caption} src={post.src} />
+              <Post key={id} user={user} postId={id} username={post.username} caption={post.caption} src={post.src} />
             ))
           }
         </center>
