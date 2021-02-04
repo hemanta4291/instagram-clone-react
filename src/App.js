@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Button,Input } from '@material-ui/core';
 import {ArrowDropDown,ArrowDropUp} from '@material-ui/icons';
 import Modal from '@material-ui/core/Modal';
+import ProfileUpdate from './profileUpdate'
 // import InstagramEmbed from 'react-instagram-embed';
 import ImgUpload from './ImgUpload'
 // import Avatar from '@material-ui/core/Avatar';
@@ -48,6 +49,7 @@ const App=() => {
   const [user,setUser] = useState(null)
   const [logToggle,setlogToggle] = useState(false)
   const [PostModal,setPostModal] = useState(false)
+  const [ProfModal,setProfModal] = useState(false)
 
   const handleSignUp = (e)=> {
     e.preventDefault()
@@ -171,7 +173,24 @@ const App=() => {
           <center>
              {
               user?.displayName?(
-                <ImgUpload username={user.displayName} setPostModal={setPostModal}/>
+                <ImgUpload user = {user} username={user.displayName} setPostModal={setPostModal}/>
+              ):(
+                <h3><code>!!!</code>you need to login to upload/post</h3>
+              )
+              
+            }
+          </center>
+        </div>
+      </Modal>
+      <Modal
+          open={ProfModal}
+          onClose={() =>setProfModal(false)}
+        >
+         <div style={modalStyle} className={classes.paper}>
+          <center>
+             {
+              user?.displayName?(
+                <ProfileUpdate user={user} username={user.displayName} setPostModal={setPostModal}/>
               ):(
                 <h3><code>!!!</code>you need to login to upload/post</h3>
               )
@@ -197,7 +216,7 @@ const App=() => {
               {
               user?.displayName?(
                 <div className="user__profile-avtaer" onClick={()=>setlogToggle(!logToggle)}>
-                  <img src="avater.png" alt="" className="app__avater"/>
+                  <img src={user.photoURL} alt="" className="app__avater"/>
                   <div className="div">
                     <h2>{user.displayName}</h2>
                     {logToggle?(<ArrowDropUp />):(<ArrowDropDown />)}
@@ -209,7 +228,11 @@ const App=() => {
             {
               user || username?
               (<div className={"logout__toggle "+ (logToggle?'':'visible')}>
-                <Button onClick={() => {auth.signOut(); setlogToggle(false)}}>Logout</Button>
+                <ul>
+                  <li><Button onClick={() => setProfModal(true)}>Settings</Button></li>
+                  <li><Button onClick={() => {auth.signOut(); setlogToggle(false)}}>Logout</Button></li>
+                </ul>
+                
               </div>)
               :
               (<div className="signIn__signUp">
@@ -224,13 +247,13 @@ const App=() => {
         <center>
           {
             posts.map(({ id,post }) =>(
-              <Post key={id} user={user} postId={id} username={post.username} caption={post.caption} src={post.src} />
+              <Post key={id} user={user} postId={id} username={post.username} caption={post.caption} src={post.src} profileURL={post.profileURL} />
             ))
           }
         </center>
       </div>
 
-
+      
     </div>
   );
 }

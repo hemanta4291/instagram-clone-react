@@ -6,6 +6,8 @@
 }
 .comments__wrapper img {
     width: 25px;
+    height: 25px;
+    border-radius: 50%;
 }
 .first__comments {
     margin-bottom: 6px;
@@ -16,7 +18,6 @@
 }
 
 .first__comments img {
-    flex: 0;
     margin-right: 7px;
 }
 
@@ -25,6 +26,7 @@
 
 .replay__comment img {
     margin-right: 7px;
+    
 }
 .replay__toggle.nodisplay{
     display: none;

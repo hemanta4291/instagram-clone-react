@@ -5,7 +5,7 @@ import firebase from 'firebase';
 import './recomment.css'
 import Commentr from './comment'
 
-const Recoments = ({recommentId,user,postId,username,text})=>{
+const Recoments = ({profileURL,recommentId,user,postId,username,text})=>{
 
     const [recomments, setRecomments] = useState([])
     const [recomment, setreComment] = useState([])
@@ -18,6 +18,7 @@ const Recoments = ({recommentId,user,postId,username,text})=>{
             db.collection("posts").doc(postId).collection("comments").doc(recommentId).collection("recomments").add({
                 text:recomment,
                 username:user.displayName,
+                profileURL:user.photoURL,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(),
             });
             setreComment('')
@@ -58,8 +59,8 @@ const Recoments = ({recommentId,user,postId,username,text})=>{
         <>
                 <div className="first__comments">
                    <div className="first__comments_li">
-                   <img src="avater2.png" alt=""/>
-                    <p className="comments__show" onClick={()=>console.log(recommentId)}><span className="bold__name">{username} : </span>{text}</p>
+                   <img src={profileURL} alt=""/>
+                    <p className="comments__show" onClick={()=>console.log(profileURL)}><span className="bold__name">{username} : </span>{text}</p>
                     <div className="replay_comment_btn"><span onClick={()=>setretoggle(!retoggle)}>Repaly</span></div>
                    </div>
                      
@@ -71,7 +72,7 @@ const Recoments = ({recommentId,user,postId,username,text})=>{
                 {
                     recomments.map(({id,recoment}) =>(
                         <div className="replay__comment" key={id}>
-                        <img src="avater3.png" alt=""/>
+                        <img src={recoment.profileURL} alt=""/>
                         <p className="comments__show" onClick={()=>console.log(recommentId)}><span className="bold__name">{recoment.username} : </span>{recoment.text}</p>
                         <div className="replay_comment_btn"><span onClick={()=>setretoggle(!retoggle)}>Repaly</span></div>
                         </div>

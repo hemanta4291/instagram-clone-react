@@ -7,7 +7,7 @@ import firebase from 'firebase';
 import Commentr from './comment'
 import Recoments from './recomment'
 
-function Post({user,username,postId,caption,src}) {
+function Post({user,username,profileURL,postId,caption,src}) {
     
     const [comments,setComments] = useState([])
     const [comment,setComment] = useState('')
@@ -18,6 +18,7 @@ function Post({user,username,postId,caption,src}) {
             db.collection("posts").doc(postId).collection("comments").add({
                 text:comment,
                 username:user.displayName,
+                profileURL:profileURL,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(),
             });
             setComment('')
@@ -51,7 +52,8 @@ function Post({user,username,postId,caption,src}) {
     return (
         <div className="post">
            <div className="post__header">
-               <img src="avater.png" alt="" className="avater"/>
+               {/* <img src="avater.png" alt="" className="avater"/> */}
+               <img src={profileURL} alt="" className="avater"/>
                 <h3>{username}</h3>
            </div>
            <h4 className="post__text">
@@ -70,12 +72,12 @@ function Post({user,username,postId,caption,src}) {
             <div className="comments__wrapper">
                 {
                     comments.map(({id,coment}) =>(
-                        <Recoments key={id} user={user} postId = {postId} recommentId = {id} username={coment.username} text={coment.text}/>
+                        <Recoments key={id} profileURL={coment.profileURL} user={user} postId = {postId} recommentId = {id} username={coment.username} text={coment.text}/>
                     ))
                 }
             </div>
 
-            <Commentr comment={comment} setComment={setComment} handleComment={handleComment}/>
+            <Commentr profileURL={profileURL} comment={comment} setComment={setComment} handleComment={handleComment}/>
         </div>
     )
 }
