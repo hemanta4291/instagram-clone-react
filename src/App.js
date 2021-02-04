@@ -229,7 +229,7 @@ const App=() => {
               user || username?
               (<div className={"logout__toggle "+ (logToggle?'':'visible')}>
                 <ul>
-                  <li><Button onClick={() => setProfModal(true)}>Settings</Button></li>
+                  <li><Button onClick={() => setProfModal(true)}>Update Profile</Button></li>
                   <li><Button onClick={() => {auth.signOut(); setlogToggle(false)}}>Logout</Button></li>
                 </ul>
                 

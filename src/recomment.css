@@ -36,3 +36,8 @@
     color: #869c98;
     cursor: pointer;
 }
+.replay__toggle {
+    position: absolute;
+    width: 96%;
+    bottom: 0;
+}

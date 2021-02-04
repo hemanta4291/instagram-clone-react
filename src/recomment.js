@@ -64,9 +64,9 @@ const Recoments = ({profileURL,recommentId,user,postId,username,text})=>{
                     <div className="replay_comment_btn"><span onClick={()=>setretoggle(!retoggle)}>Repaly</span></div>
                    </div>
                      
-                     <div className={"replay__toggle "+(retoggle?'':'nodisplay')}>
+                </div>
+                <div className={"replay__toggle "+(retoggle?'':'nodisplay')}>
                         <Commentr comment={recomment} setComment={setreComment} handleComment={handlereComment}/>
-                     </div>
                 </div>
                
                 {

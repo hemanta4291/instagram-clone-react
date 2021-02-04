@@ -53,6 +53,12 @@ img.avater{
   width: 100%;
   position: absolute;
 }
+.logout__toggle ul {
+  display: inline;
+}
+ul,li{
+  list-style: none;
+}
 .MuiInputBase-root{
   display: block !important;
   margin-bottom: 20px;

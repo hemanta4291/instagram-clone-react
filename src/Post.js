@@ -18,7 +18,7 @@ function Post({user,username,profileURL,postId,caption,src}) {
             db.collection("posts").doc(postId).collection("comments").add({
                 text:comment,
                 username:user.displayName,
-                profileURL:profileURL,
+                profileURL:user.photoURL,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(),
             });
             setComment('')

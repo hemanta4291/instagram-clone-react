@@ -16,6 +16,10 @@
 }
 .comments__wrapper {
     padding: 12px 0 8px 20px;
+    position: relative;
+}
+.comments__wrapper .replay__comment:last-child{
+    margin-bottom: 50px;
 }
 .comments__show{
     padding-bottom: 8px;
