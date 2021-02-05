@@ -15,6 +15,7 @@
 .first__comments_li {
     display: flex;
     align-items: center;
+    margin-bottom: 35px;
 }
 
 .first__comments img {

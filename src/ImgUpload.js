@@ -38,7 +38,9 @@ const ImgUpload=({noti,setNoti,user,username,setPostModal})=> {
                         caption:caption,
                         src:url,
                         username:username,
-                        profileURL:user.photoURL
+                        profileURL:user.photoURL,
+                        email:user.email,
+                        uid:user.uid
                     });
                     setProgress(0)
                     setCaption('')
