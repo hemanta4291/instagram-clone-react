@@ -4,7 +4,7 @@ import { Button,Input } from '@material-ui/core';
 // import firebase from 'firebase';
 import './imgUpload.css'
 
-const ProfileUpdate=({user,username,setPostModal})=> {
+const ProfileUpdate=({user,username,setProfModal})=> {
     const [image,setImage] = useState(null)
     const [progress,setProgress] = useState(0)
     const handleImage=(e)=>{
@@ -34,7 +34,13 @@ const ProfileUpdate=({user,username,setPostModal})=> {
                 .then(url=>{
                     return user.updateProfile({
                         photoURL:url
-                      })
+                      }).then((res)=> {
+                        setImage('')
+                        setProgress(0)
+                        setProfModal(false)
+                      }).catch(function(error) {
+                        // An error happened.
+                      });
                 })
             }
         )

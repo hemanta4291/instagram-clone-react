@@ -56,14 +56,22 @@ const Home=() => {
     e.preventDefault()
     auth.createUserWithEmailAndPassword(email,password)
     .then((authUser)=>{
-      if(authUser){
-        setUsername('')
-        setEmail('')
-        setPassword('')
-      }
+      // if(authUser){
+      //   setUsername('')
+      //   setEmail('')
+      //   setPassword('')
+      // }
       return authUser.user.updateProfile({
           displayName:username
         })
+        .then((res)=> {
+          setUsername('')
+          setEmail('')
+          setPassword('')
+          setOpen(false)
+        }).catch(function(error) {
+          // An error happened.
+        });
     })
     .catch((error)=>alert(error.message))
       // setOpen(false)
@@ -94,7 +102,6 @@ const Home=() => {
         unscriber();
       }
   },[user,username])
-
   useEffect( () =>{
     db.collection('posts').orderBy('timestamp','desc').onSnapshot(snaphot =>{
       setPosts(snaphot.docs.map(doc => 
@@ -191,7 +198,7 @@ const Home=() => {
           <center>
              {
               user?.displayName?(
-                <ProfileUpdate user={user} username={user.displayName} setPostModal={setPostModal}/>
+                <ProfileUpdate user={user} username={user.displayName} setProfModal={setProfModal}/>
               ):(
                 <h3><code>!!!</code>you need to login to upload/post</h3>
               )
